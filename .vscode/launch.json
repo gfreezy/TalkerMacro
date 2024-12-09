@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "swift-lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:TalkerMacro}",
+            "name": "Debug TalkerMacroClient",
+            "program": "${workspaceFolder:TalkerMacro}/.build/debug/TalkerMacroClient",
+            "preLaunchTask": "swift: Build Debug TalkerMacroClient"
+        },
+        {
+            "type": "swift-lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:TalkerMacro}",
+            "name": "Release TalkerMacroClient",
+            "program": "${workspaceFolder:TalkerMacro}/.build/release/TalkerMacroClient",
+            "preLaunchTask": "swift: Build Release TalkerMacroClient"
+        }
+    ]
+}
