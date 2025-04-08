@@ -37,7 +37,7 @@ final class TalkerMacroTests: XCTestCase {
                 }
 
                 init?(_ data: [String: String]) {
-                        let __a = data["a"]
+                    let __a = data["a"]
                     guard let __a else {
                         os_log("Navigate to route `/p` error, return early.")
                     return nil
@@ -73,12 +73,12 @@ final class TalkerMacroTests: XCTestCase {
                     } else {
                         nil
                     }
-                        self.init(a: __a, b: __b, c: __c, d: __d, e: __e, f: __f)
+                    self.init(a: __a, b: __b, c: __c, d: __d, e: __e, f: __f)
                 }
 
                 static func route(a: String, b: Int, c: Float = 0, d: String? = nil, e: T, f: T?) -> (String, [String: String]) {
-                        var data: [String: String] = [:]
-                        data["a"] = a
+                    var data: [String: String] = [:]
+                    data["a"] = a
                     let __b = try? JSONEncoder().encode(b)
                     if let __b {
                         data["b"] = String(data: __b, encoding: .utf8)
@@ -87,18 +87,23 @@ final class TalkerMacroTests: XCTestCase {
                     if let __c {
                         data["c"] = String(data: __c, encoding: .utf8)
                     }
-                    data["d"] = d
+                    if let d {
+                        data["d"] = d
+                    }
                     let __e = try? JSONEncoder().encode(e)
                     if let __e {
                         data["e"] = String(data: __e, encoding: .utf8)
                     }
-                    let __f = try? JSONEncoder().encode(f)
-                    if let __f {
-                        data["f"] = String(data: __f, encoding: .utf8)
+                    if let f {
+                        let __f = try? JSONEncoder().encode(f)
+                        if let __f {
+                            data["f"] = String(data: __f, encoding: .utf8)
+                        }
                     }
-                        return (Self.path, data)
+                    return (Self.path, data)
                 }
             }
+
             """,
             macros: testMacros
         )
@@ -136,7 +141,7 @@ final class TalkerMacroTests: XCTestCase {
 
             struct B {
                 @MainActor
-                #routeViews(A, C)
+                #routeViews(A.self, C.self)
             }
 
             """,
@@ -151,7 +156,7 @@ final class TalkerMacroTests: XCTestCase {
                 }
 
                 init?(_ data: [String: String]) {
-                        let __a = data["a"]
+                    let __a = data["a"]
                     guard let __a else {
                         os_log("Navigate to route `/path/a` error, return early.")
                     return nil
@@ -175,12 +180,12 @@ final class TalkerMacroTests: XCTestCase {
                     return nil
                     }
                     let __d = data["d"]
-                        self.init(a: __a, b: __b, c: __c, d: __d)
+                    self.init(a: __a, b: __b, c: __c, d: __d)
                 }
 
                 static func route(a: String, b: Int, c: Float, d: String?) -> (String, [String: String]) {
-                        var data: [String: String] = [:]
-                        data["a"] = a
+                    var data: [String: String] = [:]
+                    data["a"] = a
                     let __b = try? JSONEncoder().encode(b)
                     if let __b {
                         data["b"] = String(data: __b, encoding: .utf8)
@@ -189,8 +194,10 @@ final class TalkerMacroTests: XCTestCase {
                     if let __c {
                         data["c"] = String(data: __c, encoding: .utf8)
                     }
-                    data["d"] = d
-                        return (Self.path, data)
+                    if let d {
+                        data["d"] = d
+                    }
+                    return (Self.path, data)
                 }
 
                 var body: some View {
@@ -247,7 +254,9 @@ final class TalkerMacroTests: XCTestCase {
                     if let __c {
                         data["c"] = String(data: __c, encoding: .utf8)
                     }
-                    data["d"] = d
+                    if let d {
+                        data["d"] = d
+                    }
                     return (Self.path, data)
                 }
 
@@ -265,10 +274,11 @@ final class TalkerMacroTests: XCTestCase {
                     case C.path:
                         C(query)
                     default:
-                        Text("Not found: \\(path), \\(query)")
+                        Text("Not found: \\(path), \\(query). Did you forget to register the View.")
                     }
                 }
             }
+
             """,
             macros: testMacros
         )

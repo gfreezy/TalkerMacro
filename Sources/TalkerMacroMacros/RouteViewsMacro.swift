@@ -12,19 +12,24 @@ public struct RouteViewsMacro: DeclarationMacro {
     ) throws -> [DeclSyntax] {
         let views = node.arguments
             .compactMap({ expr in
-                expr.expression.as(DeclReferenceExprSyntax.self)?.trimmedDescription
+                if let memberAccess = expr.expression.as(MemberAccessExprSyntax.self),
+                   let base = memberAccess.base?.as(DeclReferenceExprSyntax.self),
+                   memberAccess.declName.baseName.text == "self" {
+                    return base.baseName.text
+                }
+                return nil
             })
-            .map { ty in
+            .map { (ty: String) in
                 """
                 case \(ty).path:
                     \(ty)(query)
                 """
             }
-    
+
         guard !views.isEmpty else {
             throw MacroError(errorDescription: "No valid types")
         }
-        
+
         let decl = """
         @ViewBuilder
         func view(_ path: String, query: [String: String]) -> some View {

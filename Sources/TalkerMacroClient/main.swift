@@ -29,5 +29,5 @@ struct C: View {
 
 struct B {
     @MainActor
-    #routeViews(A, C)
+    #routeViews(A.self, C.self)
 }
