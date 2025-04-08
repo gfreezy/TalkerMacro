@@ -48,6 +48,10 @@ struct BView: View {
 import SwiftUI
 import TalkerMacro
 
+typealias Router = CmRouter
+typealias RouterButton = NavigationButton
+
+
 struct RouterView<Content: View>: View {
     let content: Content
 
